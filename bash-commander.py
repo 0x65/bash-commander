@@ -3,10 +3,16 @@ import shlex
 import argparse
 from collections import defaultdict
 
-BASH_HISTORY = '%s/.bash_history' % os.environ['HOME']
+BASH_HISTORY = None
 NUM_COMMANDS = 10
 
 def _start():
+    global BASH_HISTORY
+    try:
+        BASH_HISTORY = os.environ['HISTFILE']
+    except KeyError:
+        BASH_HISTORY = '%s/.bash_history' % os.environ['HOME']
+
     parse_args()
     command_counts = defaultdict(int)
 
